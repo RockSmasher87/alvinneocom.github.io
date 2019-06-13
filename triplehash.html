@@ -939,15 +939,15 @@
 <textarea name="bro">put in thing to be triple-hashed here</textarea>
 <p name="ye">hashed code be like:</p>
 <script>
-var area = ye;
+var area = document.ye;
 if (area.addEventListener) {
   area.addEventListener('input', function() {
-    ye.value="triple hashed text be like: "+sha384(sha512(sha384(bro.value)))
+    document.ye.value="triple hashed text be like: "+sha384(sha512(sha384(bro.value)))
     
   }, false);
 } else if (area.attachEvent) {
   area.attachEvent('onpropertychange', function() {
-    ye.value="internet explorer is gay, but triple hashed text be like: "+sha384(sha512(sha384(bro.value)))
+    document.ye.value="internet explorer is gay, but triple hashed text be like: "+sha384(sha512(sha384(bro.value)))
   });
 }
 </script>
