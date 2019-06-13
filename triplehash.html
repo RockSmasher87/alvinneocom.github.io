@@ -936,18 +936,12 @@
 })();
 </script>
 <body>
-<textarea name="bro" id="bro">put in thing to be triple-hashed here</textarea>
+<textarea name="bro" id="bro" onKeyPress=”LetsGetFunky()”>put in thing to be triple-hashed here</textarea>
 <p name="ye" id="ye">hashed code be like:</p>
 <script>
-  var myInput = document.getElementById = "ye";
-
-myInput.addEventListener("keyup", function(){
-  if(!this.checkValidity() || !this.value){
-    document.getElementById("ye").value="triple hashed text be like: "+sha384(sha512(sha384(document.getElementById("bro").value)))
-  } else {
+function LetsGetFunky(){
     document.getElementById("ye").value="triple hashed text be like: "+sha384(sha512(sha384(document.getElementById("bro").value)))
   }
-});
 </script>
 </body>
 </html>
