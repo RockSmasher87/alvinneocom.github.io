@@ -7,9 +7,16 @@
     body {
     margin: 0;
 }
+    iframe {
+    display: block;       /* iframes are inline by default */
+    background: #000;
+    border: none;         /* Reset default border */
+    height: 100vh;        /* Viewport-relative units */
+    width: 100vw;
+}
   </style>
 </head>
 <body style="text-align: center;">
-<iframe src="https://calendar.google.com/calendar/embed?src=2bnj9ut2m257f39apoq8u4kfdk%40group.calendar.google.com&ctz=America%2FChicago" style="border: 0" width="100vw" height="100vh" frameborder="0" scrolling="no"></iframe>
+<iframe src="https://calendar.google.com/calendar/embed?src=2bnj9ut2m257f39apoq8u4kfdk%40group.calendar.google.com&ctz=America%2FChicago" frameborder="0" scrolling="no"></iframe>
 </body>
 </html>
