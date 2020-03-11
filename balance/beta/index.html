@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+    <!--
+        made with <3 by alvinneocom on github
+        coming to xinos by march 1
+        licensed under the MIT license
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta description="A game where you play as a member of a utopian community.">
+        <link rel="stylesheet" href="http://alvinneo.com/lightcss-project/lightcss.css">
+        <style>
+            /* center css */
+            body
+            {
+                text-align: center;
+                margin: 5vw;
+            }
+            .center {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+        </style>
+        <title>balance</title>
+    </head>
+    <body>
+        <div class="center">
+            <div id="startup">
+                <h1>balance</h1>
+                <p>can you make it?<br>xinos version soon</p>
+                <button class="button" onclick="start()">start</button>
+            </div>
+            <div id="game" style="display: none;">
+                <h3>balance</h3>
+                <p id="out">Welcome to balance! Each year, you'll have 3 choices. The current year is 0. Press 1 for original mode and 2 for realism mode.</p>
+                <!-- <span id="buttons"> -->
+                    <!--
+                    due to complaints that there shouldn't be any input at the end, these buttons are grouped so they can be removed
+                    update: should be fixed now, span no longer needed
+                    update 2: not dealing with this today, maybe another time. for now, i'm leaving the old input denial system.
+                    -->
+                    <button class="button" onclick="input(1)">1</button>&nbsp;&nbsp;
+                    <button class="button" onclick="input(2)">2</button>&nbsp;&nbsp;
+                    <button class="button" onclick="input(3)">3</button>
+                <!-- </span> -->
+            </div>
+        </div>
+        <h6>made with &lt;3 by alvinneocom on github</h6>
+        <script src="balance.js"></script>
+    </body>
+</html>

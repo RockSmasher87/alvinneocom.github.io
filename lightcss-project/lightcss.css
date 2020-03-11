@@ -1,0 +1,217 @@
+/* Easy, simple, and material. Inspired by Milligram and Materialize. Sort of like a hybrid of the two. */
+/* Licensed under CC0. Do whatever you want with this. Go crazy. */
+/* Please credit me if you feel like it by putting "lightcss project by alvinneo.com." */
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+body {
+    background-color: #424242;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+button:focus {
+    outline: none;
+}
+a:focus {
+    outline: none;
+}
+
+.button {
+    border: none;
+    background-color: #6d6d6d;
+    color: white;
+    font-family: 'Roboto';
+    padding: 2vh;
+    font-size: 16px;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+}
+
+.button:focus {
+    border: 2px solid #62ebff !important;
+}
+.button:hover {
+    border: 2px solid #00b8d4;
+}
+.circle-button {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #dd2c00;
+    font-family: 'Material Icons';
+    font-size: 2rem;
+    text-align: center;
+    padding: 0px;
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+}
+
+.drop-down {
+    border: 2px solid #62ebff;
+    border: none;
+    background-color: #525252;
+    color: white;
+    font-family: 'Roboto';
+    font-size: 15px;
+    box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75);
+}
+
+.drop-down:hover {
+    border: 1px solid #00b8d4;
+}
+
+.drop-dwon:focus {
+    border: 1px solid #00b8d4;
+} 
+
+.link {
+    text-decoration: none;
+    color: #00b8d4;
+}
+.link:hover {
+    text-decoration: underline;
+    color: #62ebff;
+}
+.text-input {
+    border-color: #00b8d4;
+    border-width: 1px;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: solid;
+    background-color: transparent;
+    color: white;
+    font-family: 'Roboto';
+    font-size: 16px;
+}
+.text-input:focus {
+    border-color: #62ebff;
+    font-family: 'Roboto';
+    outline: none;
+}
+.text-input:disabled {
+    opacity: 0.38;
+}
+.blockquote {
+    border-color: #62ebff;
+    border-top-style: none;
+    border-left-style: solid;
+    border-right-style: none;
+    border-bottom-style: none;
+    opacity: 0.87;
+    font-style: italic;
+    padding-left: 1vw;
+}
+.code {
+    border-color: #00ff00;
+    border-top-style: none;
+    border-left-style: solid;
+    border-right-style: none;
+    border-bottom-style: none;
+    opacity: 0.87;
+    font-family: monospace;
+    padding-left: 1vw;
+}
+.lightnav {
+    background-color: #bb86fc;
+    font-size: 2rem;
+    padding: 1vw;
+    text-align: center;
+}
+.bln {
+    background-color: #455a64;
+    font-size: 2rem;
+    padding: 0.5vw;
+    font-family: 'Material Icons';
+    text-align: center;
+}
+.bln a {
+    color: white;
+    text-decoration: none;
+}
+.bln a:hover {
+    color: #62ebff;
+    text-decoration: none;
+}
+@media only screen and (max-width: 600px) {
+.card {
+    box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+    padding: 1vw;
+    background-color: #757575;
+}
+}
+@media only screen and (min-width: 600px) {
+.card {
+    box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+    padding: 1vw;
+    width: 500px;
+    background-color: #757575;
+}
+}
+.hcenter {
+    display: block;
+    text-align: center;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+#container {
+    padding: 1vw;
+}
+@media only screen and (min-width: 500px){
+.toast {
+   position:absolute;
+   top:0;
+   right:0;
+   box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+   width: 15vw;
+   background-color: #757575;
+   margin-right: 1vw;
+   margin-top: 1vw;
+   padding: 1vw;
+}
+}
+@media only screen and (max-width: 500px){
+.toast {
+    display: none;
+}
+}
+h1 {
+    font-size: 46px;
+}
+h2 {
+    font-size: 36px;
+}
+h3 {
+    font-size: 28px;
+}
+h4 {
+    font-size: 22px;
+}
+h5 {
+    font-size: 18px;
+}
+h6 {
+    font-size: 14px;
+}
+p {
+    font-size: 16px;
+}
+td {
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    border-color: #757575;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: solid;
+    padding: 1vw;
+}
+th {
+    padding: 1vw;
+}

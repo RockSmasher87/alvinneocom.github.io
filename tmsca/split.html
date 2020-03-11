@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+    <!--
+        Copyright (c) 2020 Alvin Rhaman
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta content="vSheet's PDF Integration is state of the art and stuff." name="description">
+        <link rel="stylesheet" href="../lightcss-project/lightcss.css">
+        <link rel="shortcut icon" type="image/gif" href="http://alvinneo.com/img/favicon.png">
+        <title>vSheet PDF</title>
+        <style>
+            body {
+                text-align: center;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div class="grid">
+                <span class="grid-item" style="grid-column-start: 1; grid-column-end: 8; text-align: right;">
+                    <iframe src="" id="url" style="height: 100vh; width: 66.666vw; overflow: hidden; margin: 0px; padding: 0px;" width="100%" height="100%" frameborder="0"></iframe>
+                </span>
+                <span class="grid-item" style="grid-column-start: 12; grid-column-end: 12; text-align: right;">
+                    <iframe src="" id="vurl" style="height: 100vh; width: 33.333vw; overflow: hidden; margin: 0px; padding: 0px;" width="100%" height="100%" frameborder="0"></iframe>
+                </span>
+            </div>
+        </div>
+        <script src="qlib.js"></script>
+        <script>
+            let url = window.location.href;
+            if(url.indexOf("?url=") != -1)
+            {
+                iframer();
+            }
+            else
+            {
+                alert("Malformed URL.");
+            }
+            
+            function iframer()
+            {
+                let deparam = parseQuery(document.location.search);
+                document.getElementById("url").src = deparam.url;
+                document.getElementById("vurl").src = "http://alvinneo.com/vsheet?url=" + deparam.json;
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+    <!--
+        D0ugins's code was cast into the fire, therefore his credit has been removed.
+    -->
+    <!--
+        Copyright (c) 2020 Alvin Rhaman
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+    -->
+    <!--
+        w/ 404 checks for 404 and does not redirect if the file doesn't exist.
+        no 404 redirects regardless of whether the file exists or not.
+        w/ 404 is recommended whenever possible, however no 404 can be used on slow connections.
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta content="Access and Take any Middle School TMSCA from 2017 to now!" name="description">
+        <link rel="stylesheet" href="../lightcss-project/lightcss.css">
+        <title>TMSCA Viewer</title>
+        <style>
+            body {
+                text-align: center;
+            }
+            .center {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </head>
+    <body>
+        <h6>Made with &lt;3 by alvinneocom on Github | Licensed under the MIT License</h6>
+        <form id="container" class="center">
+            <input class="text-input" name="tna" id="tna" placeholder="Test Name" autofocus><br>
+            <input class="text-input" name="tnu" id="tnu" placeholder="Test Number"><br>
+            <input class="text-input" name="ty" id="ty" placeholder="Test Year (19-20)"><br><br>
+            <button class="button">Take it!</button>
+            <h6>Tests provided by <a href="https://github.com/D0ugins/TMSCA" class="link">D0ugins</a>.<br>Acronyms: KO = Kick-Off, GU = Gear-Up, TU = Tune-Up, REG = Regional</h6>
+        </form>
+        <script src="qlib.js"></script>
+        <script>
+            let url = window.location.href;
+            if(url.indexOf("?tna=") != -1)
+            {
+                findtest(1);
+            }
+            function findtest(n)
+            {
+                let deparam = parseQuery(document.location.search);
+                let test = deparam.tna.toLowerCase();
+                let tid = deparam.tnu.toLowerCase();
+                let tyear = deparam.ty.toLowerCase();
+                let id = 0;
+                let url = "http://alvinneo.com/archive/TMSCA/";
+                let vurl = "&json=http://alvinneo.com/archive/TMSCA/Answer%20Keys/"
+                document.getElementById("tna").value = deparam.tna.replace("+", " ");
+                document.getElementById("ty").value = deparam.ty.replace("+", " ");
+                // 1 = math, 2 = calc, 3 = ns, 4 = sci
+                if(tyear === "")
+                {
+                    tyear = "19-20";
+                }
+                if(tid === "")
+                {
+                    window.alert("No test ID entered.");
+                    return;
+                }
+                if(!(tid[0] <= '9' && tid[0] >= '0'))
+                {
+                    tid = "%20" + tid.toUpperCase();
+                }
+                if(test.includes("math"))
+                {
+                    url += "Math/Math%20" + tyear + "/MSMA" + tid + "%20" + tyear + ".pdf";
+                    vurl += "Mathf/Math%20" + tyear + "/MSMA" + tid + "%20" + tyear + "%20Key%20Formatted.json";
+                    id = 1;
+                }
+                else if(test.includes("number"))
+                {
+                    url += "Number%20Sense/Number%20Sense%20" + tyear + "/MSNS" + tid + "%20" + tyear +".pdf";
+                    vurl += "Number%20Sensef/Number%20Sense%20" + tyear + "/MSNS" + tid + "%20" + tyear + "%20Key%20Formatted.json";
+                    id = 3;
+                }
+                else if(test.includes("calc"))
+                {
+                    url += "Calculator/Calculator%20" + tyear + "/MSCA" + tid + "%20" + tyear + ".pdf";
+                    id = 2;
+                }
+                else if(test.includes("sci"))
+                {
+                    url += "Science/Science%20" + tyear + "/MSSC" + tid + "%20" + tyear + ".pdf";
+                    vurl += "Sciencef/Science%20" + tyear + "/MSSC" + tid + "%20" + tyear + "%20Key%20Formatted.json";
+                    id = 4;
+                }
+                else
+                {
+                    window.alert("Could not understand test name.");
+                    return;
+                }
+                var existencecheck;
+                if(n)
+                {
+                    existencecheck = exists(url);
+                }
+                else
+                {
+                    existencecheck = 1;
+                }
+                if(existencecheck)
+                {
+                    if(test.includes("math") | test.includes("sci") | test.includes("number")) window.location = "http://alvinneo.com/tmsca/split.html?url=" + url + vurl;
+                    else window.location = url;
+                }
+                else
+                {
+                    window.alert("Could not locate test.");
+                    return;
+                }
+            }
+            function exists(url)
+            {
+                let http = new XMLHttpRequest();
+                http.open('HEAD', url, false);
+                http.send();
+                if (http.status != 404)
+                {
+                    return 1;
+                }
+                return 0;
+            }
+        </script>
+    </body>
+</html>

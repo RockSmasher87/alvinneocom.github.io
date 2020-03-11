@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html>
+    <!--
+        All code from D0ugin's NS edits have been removed.
+        All code is made by Alvin Rhaman (except for the time formatter and qlib)
+    -->
+    <!--
+        Copyright (c) 2020 Alvin Rhaman
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta content="The future in virtual answer sheets." name="description">
+        <link rel="stylesheet" href="../lightcss-project/lightcss.css">
+        <title>vSheet</title>
+        <style>
+            body
+            {
+                text-align: center;
+            }
+            /* .center {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            } */
+        </style>
+    </head>
+    <body>
+        <div id="container" class="center">
+            <button class="button" id="timer">Timer</button><br><br>
+            <input type="text" class="text-input" id="test" placeholder="JSON URL..." autocomplete="off" style="display: none">
+            <!-- <div class="grid"> -->
+                <!-- <span class="grid-item" style="grid-column-start: 1; grid-column-end: 6; text-align: right;"> -->
+                <!-- </span> -->
+            <!-- </div> --><br>
+        </div>
+        <br><button class="button" onclick="grade(document.getElementById('test').value)">Grade it!</button><br>
+        <p id="score">Your score will appear here when you're done.</p>
+        <script src="qlib.js"></script>
+        <script>
+            // vSheet: The superior grading system
+            // vSheet answer key template (MATH/SCI):
+            /*
+                {
+                    "license":"MIT",
+                    "testname":"Answer Template",
+                    "porter":"Alvin Rhaman",
+                    "penalty":2,
+                    "prize":5,
+                    "answers":{
+                        "1":"A",
+                        "2":"B",
+                        "3":"C",
+                        "4":"D"
+                    }
+                }
+            */
+            // vSheet answer key template (NS):
+            // Arrays outside of multiples of 10 mean multiple answers.
+            // Arrays on multiples of 10 mean range questions.
+            /*
+                {
+                    "license":"MIT",
+                    "testname":"Answer Template",
+                    "porter":"Alvin Rhaman",
+                    "penalty":4,
+                    "prize":5,
+                    "answers":{
+                        "1":[".2","11/20"],
+                        "10":[1234, 7890]
+                    }
+                }
+            */
+            // NOTE: THERE CAN BE OTHER PROPERTIES NOT SPECIFIED IN THE STANDARD AND STILL MAINTAIN COMPLIANCE, JUST NOT IN ANSWERS.
+            // see qlib.js's link
+            // also see: https://stackoverflow.com/questions/3733227/javascript-seconds-to-minutes-and-seconds
+            function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+            let graded = false;
+            // qlib crap
+            let url = window.location.href;
+            let deparam = {};
+            if(url.indexOf("?url=") != -1)
+            {
+                deparam = parseQuery(document.location.search);
+                document.getElementById("test").value = deparam.url;
+            }
+            // determine length and timer length, also initialize required ns variables
+            let len = ((document.getElementById("test").value.toLowerCase().includes("number")) ? 80 : 50);
+            let timer = ((document.getElementById("test").value.toLowerCase().includes("number")) ? 10 : 40) * 60;
+            timer++;
+            let ns = (document.getElementById("test").value.toLowerCase().includes("number"));
+            let nsblank = [];
+            let nslast = 0;
+            let att = 0;
+            let missed = [];
+            // fill in test answer sheet
+            let containerHTML = document.getElementById("container").innerHTML;
+            for(i = 0; i < len; i++)
+            {
+                let j = i + 1;
+                containerHTML += "<input type=\"text\" class=\"text-input\" id=\""+j.toString()+"\" placeholder=\""+j.toString()+"\" autocomplete=\"off\"><br>"
+            }
+            document.getElementById("container").innerHTML = containerHTML;
+            document.getElementById("test").value = deparam.url;
+            document.addEventListener("keydown", keydown);
+            // start the timer using titerate
+            time();
+            // vSheet Timer
+            function time()
+            {
+                titerate();
+            }
+            // vSheet Iterater
+            function titerate()
+            {
+                timer--;
+                let tstring = fmtMSS(timer);
+                document.getElementById("timer").innerHTML = tstring;
+                if(!timer && !graded)
+                {
+                    grade(document.getElementById("test").value);
+                    alert("Your test has ended. It has automatically been graded for you.");
+                }
+                else if(timer !== 0 && !graded)
+                {
+                    setTimeout(titerate, 1000);
+                }
+            }
+            // vSheet Keydown Checker (very complex and state of the art)
+            function keydown(e)
+            {
+                if(e.code === "Backspace" && ns) e.preventDefault();
+            }
+            // vSheet Grader
+            function grade(test)
+            {
+                // refuse to grade if already graded
+                if(graded)
+                {
+                    alert("Your test was not graded, as to prevent cheating.");
+                    return;
+                }
+                // http stuff, don't mess with it
+                let request = new XMLHttpRequest();
+                let scorep = document.getElementById("score");
+                let score = 0;
+                request.open("GET", test);
+                request.responseType = "json";
+                request.send();
+                // put any crap in here or things won't go the way you want it to
+                request.onload = function() {
+                    const json = request.response;
+                    const answers = json.answers;
+                    for(i = 0; i < len; i++)
+                    {
+                        // i + 1 because indexes start at 1
+                        let j = i + 1;
+                        // get student answer and convert to uppercase
+                        let student = (ns ? document.getElementById(j.toString()).value : document.getElementById(j.toString()).value.toUpperCase());
+                        // check for invalid answers
+                        if((!(student[0] >= 'A' && student[0] <= 'E') && student !== "" && !ns) || student.toUpperCase().includes("CORRECT"))
+                        {
+                            alert("One of your answers was invalid. Could not parse test.");
+                            return;
+                        }
+                        // get answer according to answer sheet (no need to toUpperCase since answer sheets should be compliant)
+                        let answer = answers[j.toString()];
+                        // check if answer follows certain rules (with ns and array exceptions)
+                        if(answer === student && !Array.isArray(answer))
+                        {
+                            document.getElementById(j.toString()).style = "color: lime";
+                            document.getElementById(j.toString()).value = j + ". " + student;
+                            score += json["prize"];
+                            nslast = i;
+                            att++;
+                        }
+                        else if(student !== "" && !Array.isArray(answer))
+                        {
+                            document.getElementById(j.toString()).style = "color: red";
+                            document.getElementById(j.toString()).value = j + ". " + student + " - Correct: " + answer;
+                            score -= json["penalty"];
+                            nslast = i;
+                            att++;
+                            missed.push(j);
+                        }
+                        else if(student === "" && !Array.isArray(answer))
+                        {
+                            if(ns) nsblank.push(i);
+                            document.getElementById(j.toString()).style = "color: yellow";
+                            document.getElementById(j.toString()).value = j + ". " + "Correct: " + answer;
+                        }
+                        else
+                        {
+                            // apparently every 10 questions are range on number sense
+                            if(!(j % 10))
+                            {
+                                // parse student as an integer
+                                student = parseInt(student);
+                                // check if answer is correct
+                                if(student >= answer[0] && student <= answer[1])
+                                {
+                                    nslast = i;
+                                    document.getElementById(j.toString()).style = "color: lime";
+                                    document.getElementById(j.toString()).value = j + ". " + student;
+                                    score += json["prize"];
+                                    att++;
+                                }
+                                else if(!isNaN(student))
+                                {
+                                    nslast = i;
+                                    document.getElementById(j.toString()).style = "color: red";
+                                    document.getElementById(j.toString()).value = j + ". " + student + " - Correct: " + answer;
+                                    document.getElementById(j.toString()).value = document.getElementById(j.toString()).value.replace(",", "-");
+                                    score -= json["penalty"];
+                                    att++;
+                                    missed.push(j);
+                                }
+                                else
+                                {
+                                    nsblank.push(i);
+                                    document.getElementById(j.toString()).style = "color: yellow";
+                                    document.getElementById(j.toString()).value = j + ". " + "Correct: " + answer;
+                                    document.getElementById(j.toString()).value = document.getElementById(j.toString()).value.replace(",", "-");
+                                }
+                            }
+                            else
+                            {
+                                if(answer.includes(student))
+                                {
+                                    nslast = i;
+                                    document.getElementById(j.toString()).style = "color: lime";
+                                    document.getElementById(j.toString()).value = j + ". " + student;
+                                    score += json["prize"];
+                                    att++;
+                                }
+                                else if(student !== "")
+                                {
+                                    nslast = i;
+                                    document.getElementById(j.toString()).style = "color: red";
+                                    document.getElementById(j.toString()).value = j + ". " + student + " - Correct: " + answer[0];
+                                    score -= json["penalty"];
+                                    att++;
+                                    missed.push(i);
+                                }
+                                else
+                                {
+                                    nsblank.push(i);
+                                    document.getElementById(j.toString()).style = "color: yellow";
+                                    document.getElementById(j.toString()).value = j + ". " + "Correct: " + answer[0];
+                                }
+                            }
+                        }
+                    }
+                    for(i = 0; i < nsblank.length; i++)
+                    {
+                        let j = nsblank[i] + 1;
+                        if(nslast > nsblank[i])
+                        {
+                            score -= json["penalty"];
+                            document.getElementById(j.toString()).style = "color: red";
+                            att++;
+                            missed.push(j);
+                        }
+                    }
+                    // missed filter found here: https://wsvincent.com/javascript-remove-duplicates-array/
+                    missed = [...new Set(missed)];
+                    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+                    missed.sort((a, b) => a - b);
+                    let acc = Math.floor(((att - missed.length) / att) * 100);
+                    scorep.innerHTML = "Your score is: " + score.toString() + "<br>Percent accuracy: " + acc + "%<br>You missed question" + ((missed.length !== 1) ? "s" : "") + ": " + ((missed.length !== 0) ? missed.join(", ") : "None! :)") + "<br>You took " + fmtMSS((((document.getElementById("test").value.toLowerCase().includes("number") ? 10 : 40) * 60) - timer) + 1) + ".<br>Ported by: " + json.porter + "<br>Test name: " + json.testname + "<br>Answer key licensed under " + json.license + ".";
+                    graded = true;
+                }
+            }
+        </script>
+    </body>
+</html>
