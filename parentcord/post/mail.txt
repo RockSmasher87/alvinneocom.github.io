@@ -1,5 +1,0 @@
-This site is for mail information only. This mail info site is in real time.<br>
-Format:<br>
-Sender - Recipient - Mail Type - Package Contents -  Expected Arrival - Location<br>
-AraRouge - RockSmasher87 - Priority - Full set of iron armor and diamond pickaxe - Arrived, waiting for pickup - Curtigrad Post Office Priority Chest, row 1<br>
-Total amount of packages delivered: 3<br>
