@@ -25,7 +25,6 @@
         <meta charset="utf-8">
         <meta content="vSheet's PDF Integration is state of the art and stuff." name="description">
         <link rel="stylesheet" href="../lightcss-project/lightcss.css">
-        <link rel="shortcut icon" type="image/gif" href="http://alvinneo.com/img/favicon.png">
         <title>vSheet PDF</title>
         <style>
             body {
@@ -61,7 +60,7 @@
             {
                 let deparam = parseQuery(document.location.search);
                 document.getElementById("url").src = deparam.url;
-                document.getElementById("vurl").src = "http://alvinneo.com/vsheet?url=" + deparam.json;
+                document.getElementById("vurl").src = "../vsheet?url=" + deparam.json;
             }
         </script>
     </body>
